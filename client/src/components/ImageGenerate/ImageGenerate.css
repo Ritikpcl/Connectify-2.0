@@ -1,0 +1,40 @@
+.s-button{
+    padding: 0.5rem 1rem;
+    width: 100%;
+    margin-left: 1rem;
+}
+
+
+.tagLine{
+    margin-bottom: -1rem;
+    font-weight: 600;
+    color: var(--silver);
+    font-size: 1.3rem;
+}
+
+.ImageGenerator-div{
+
+    align-items: center;
+}
+
+.previewImage>img{
+    object-fit: contain;
+}
+
+.ImageGenerator-div>div>input{
+    background-color: var(--inputColor);
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 17px;
+    border: none;
+    outline: none;
+}
+
+.ImageGenerator-div>div>input::placeholder{
+    color: rgb(189, 188, 188);
+}
+
+.ImageGenerator-div>div>input:valid{
+    color: rgb(234, 232, 232);
+}

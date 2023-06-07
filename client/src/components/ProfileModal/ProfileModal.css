@@ -1,0 +1,30 @@
+.modal-infoForm{
+    color: rgba(232, 232, 233, 0.858);
+    background: #383737;
+    padding: 1rem;
+}
+
+@media (max-width:1130px) {
+    .modal-infoForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+.modal-infoForm > div > input{
+    margin: 1rem;
+    background-color: rgba(237, 243, 249, 0.105); 
+}
+
+.modal-infoForm > div > input:valid{
+    color: rgb(184, 184, 184);
+}
+
+.modal-infoForm > button{
+    color: rgb(184, 184, 184);;
+    background-color: rgba(237, 243, 249, 0.105); 
+    border: 1px solid rgb(184, 184, 184);
+}

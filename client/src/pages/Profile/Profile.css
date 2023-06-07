@@ -1,0 +1,27 @@
+.Profile{
+    display: grid;
+    grid-template-columns: 18rem auto 20rem;
+    gap: 1rem;
+    position: relative;
+    color: rgba(232, 232, 233, 0.858);
+}
+
+
+@media (max-width: 1130px) {
+    .Profile{
+        grid-template-columns:  auto;
+    }
+}
+
+
+.Profile-center{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.postSide{
+    overflow: unset;
+}

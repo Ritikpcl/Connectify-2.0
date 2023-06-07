@@ -1,0 +1,57 @@
+.menu-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: 325px;
+    background-color: #2d2d2d5a;
+    position: absolute;
+    top: 4rem;
+    left: 1rem;
+    z-index: 2;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--cardColor);
+    transition: transform 0.5s ease;
+    transform: translateX(-110%);
+    backdrop-filter: blur(20px);
+  }
+
+.menu-div-open{
+    transform: translateX(0);
+}
+
+.menu-div-close{
+    transform: translateX(30);
+}
+
+.menu-div>img{
+    width: 55px;
+}
+
+.menu-div>span{
+    color: rgba(232, 232, 233, 0.858);
+    margin-bottom: 10px;
+}
+
+.menu-div>a{
+    text-decoration: none;
+    width: 10rem;
+    background-color: rgba(237, 243, 249, 0.105); 
+    color: rgba(232, 232, 233, 0.858);
+    margin: 5px;
+    text-align: center;
+    padding: 8px 0px;
+    border-radius: 10px;
+}
+
+.Ai-div{
+    position: relative;
+}
+
+.Ai-div>img{
+    position: absolute;
+    width: 30px;
+    top: -8px;
+    right: 1px;
+}

@@ -1,0 +1,74 @@
+.Auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 4rem;
+  position: relative;
+  color: rgba(232, 232, 233, 0.858);
+}
+
+@media (max-width:1130px){
+  .Auth{
+    flex-direction: column;
+  }
+
+  .Webname, .a-left>img{
+    margin-top: -8rem;
+  }
+  
+  .authForm>div>input{
+    width: 60px;
+  }
+
+}
+
+.Auth > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* left side */
+.a-left{
+    gap: 1rem;
+}
+
+.a-left > img {
+  width: 7rem;
+  height: 7rem;
+}
+
+.Webname>h6{
+  margin-top: -1rem;
+  font-size: 1.3rem;
+  font-weight: 100;
+  font-style: italic;
+  color: rgba(232, 232, 233, 0.451);
+}
+
+
+
+/* right side */
+
+
+.authForm{
+    background-color: var(--cardColor);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.authForm>div{
+    width: 100%;
+    align-items: center;
+    justify-content: center;  
+}
+
+.authForm>div>input::placeholder{
+  color: rgb(189, 188, 188);
+}
+
+.authForm>div>input:valid{
+  color: rgb(189, 188, 188);
+}
+
