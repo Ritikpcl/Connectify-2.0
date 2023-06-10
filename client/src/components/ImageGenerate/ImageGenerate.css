@@ -38,3 +38,18 @@
 .ImageGenerator-div>div>input:valid{
     color: rgb(234, 232, 232);
 }
+
+.swal2-popup {
+    font-size: 35px;
+    background-color: #2d2d2d5a;
+    border: 1px solid var(--cardColor);
+    backdrop-filter: blur(20px);
+    color: rgba(232, 232, 233, 0.858);
+    border-radius: 0.5rem;
+  }
+
+@media (max-width : 1130px){
+    .swal2-popup {
+        font-size: 7px ;
+    }
+}

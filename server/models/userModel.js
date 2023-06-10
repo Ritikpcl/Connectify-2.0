@@ -29,7 +29,7 @@ const UserSchema = mongoose.Schema(
    },
     coverPicture: {
       type : String,
-      default : "https://res.cloudinary.com/dihxiv8cj/image/upload/v1682282443/defaultCover_sxkzti.jpg",
+      default : "https://asset.cloudinary.com/dihxiv8cj/f7ca52cb2d61e0e96d9d15677a16d33a",
       required : true
      },
     about: String,

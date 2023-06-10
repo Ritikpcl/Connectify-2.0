@@ -4,6 +4,7 @@ import FollowersModal from "../FollowersModal/FollowersModal";
 import { getAllUser } from "../../api/UserRequests";
 import User from "../User/User";
 import { useSelector } from "react-redux";
+import ReactLoading from 'react-loading';
 
 const FollowersCard = ({ location }) => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -28,7 +29,9 @@ const FollowersCard = ({ location }) => {
   }, [user]);
 
   if (loading) {
-    return <p>Loading...</p>; 
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <ReactLoading type={"bars"} color="#fff" />
+  </div> 
   }
 
   return (

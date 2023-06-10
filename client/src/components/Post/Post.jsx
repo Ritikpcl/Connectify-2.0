@@ -10,23 +10,47 @@ import { useSelector } from "react-redux";
 import * as UserApi from "../../api/UserRequests.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import ReactLoading from "react-loading"
 
 const Post = ({ data, onDelete }) => {
   const imageUrl = data?.image
-  
+  const createdAt = new Date(data.createdAt);
+  console.log(createdAt)
+
   const { user } = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length)
   const [userData, setUserData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [formattedTime, setFormattedTime] = useState("");
+
+  const calculateTimeDifference = () => {
+    const now = new Date();
+    console.log(createdAt)
+    const diffInMilliseconds = now - createdAt - 7*60*1000;
+    const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+
+    if (diffInMinutes < 1) {
+      return `just now`;
+    }else if (diffInMinutes < 60) {
+      return `${diffInMinutes} mins ago`;
+    } else if (diffInMinutes < 1440) {
+      const diffInHours = Math.floor(diffInMinutes / 60);
+      return `${diffInHours} hours ago`;
+    } else {
+      const diffInDays = Math.floor(diffInMinutes / 1440);
+      return `${diffInDays} days ago`;
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
-    let isMounted = true; 
+    setFormattedTime(calculateTimeDifference());
+    let isMounted = true;
     const fetchData = async () => {
       if (data.userId !== user._id) {
         const user = await UserApi.getUser(data.userId);
-        if (isMounted) { 
+        if (isMounted) {
           setUserData(user.data);
           setLoading(false);
         }
@@ -35,9 +59,9 @@ const Post = ({ data, onDelete }) => {
         setLoading(false);
       }
     };
-  
+
     fetchData();
-  
+
     return () => {
       isMounted = false;
     };
@@ -52,7 +76,9 @@ const Post = ({ data, onDelete }) => {
   return (
     <div>
       {
-        loading ? <p>Loading...</p> :
+        loading ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <ReactLoading type={"bars"} color="#fff" />
+        </div> :
           <div className="Post">
 
             <div className="detail">
@@ -82,20 +108,26 @@ const Post = ({ data, onDelete }) => {
               src={imageUrl ? imageUrl : ""}
               alt=""
             />
-            
+
 
             <div className="postReact">
               <img
                 src={liked ? Heart : NotLike}
                 alt=""
-                style={{ cursor: "pointer",  width:"30px"}}
+                style={{ cursor: "pointer", width: "30px" }}
                 onClick={handleLike}
               />
             </div>
 
-            <span style={{ color: "rgba(232, 232, 233, 0.858)", fontSize: "12px" }}>
-              {likes} likes
-            </span>
+            <div className="metaData">
+              <span style={{ color: "rgba(232, 232, 233, 0.858)", fontSize: "12px" }}>
+                {likes} likes
+              </span>
+
+              <span style={{ color: "rgba(232, 232, 233, 0.858)", fontSize: "12px" }}>
+                {formattedTime} {/* Display the formatted time */}
+              </span>
+            </div>
           </div>
       }
     </div>

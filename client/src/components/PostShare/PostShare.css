@@ -8,6 +8,7 @@
 
 .PostShare{
     display: flex;
+    align-items: center;
     gap: 1rem;
     background-color: rgba(237, 243, 249, 0.147);
     padding: 1rem;

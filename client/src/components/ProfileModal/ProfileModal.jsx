@@ -95,6 +95,17 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
             className="infoInput"
           />
         </div>
+        
+        <div>
+          <input
+            value={formData.password}
+            onChange={handleChange}
+            type="password"
+            placeholder="password"
+            name="password"
+            className="infoInput"
+          />
+        </div>
 
         <div>
           <input
@@ -106,6 +117,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
             className="infoInput"
           />
         </div>
+
 
         <div>
           <input

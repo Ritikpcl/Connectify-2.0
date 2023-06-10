@@ -4,6 +4,8 @@ import Logo from "../../img/logo.png";
 import { logIn, signUp } from "../../actions/AuthActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 
 const Auth = () => {
   const initialState = {
@@ -35,16 +37,29 @@ const Auth = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const fireAlert = (message) => {
+    Swal.fire({
+      position: 'top',
+      icon: 'error',
+      title: `${message}`,
+      showConfirmButton: false,
+      timer: 1500
+    })
+  }
+
   // Form Submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     setConfirmPass(true);
     e.preventDefault();
     if (isSignUp) {
+      const res = 
       data.password === data.confirmpass
-        ? dispatch(signUp(data, navigate))
+        ? await dispatch(signUp(data, navigate))
         : setConfirmPass(false);
+      if(res) fireAlert(res.response.data.message)
     } else {
-      dispatch(logIn(data, navigate));
+      const res = await dispatch(logIn(data, navigate));
+      if(res) fireAlert(res.response.data) 
     }
   };
 

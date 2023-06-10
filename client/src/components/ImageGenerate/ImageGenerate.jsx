@@ -6,6 +6,7 @@ import { uploadImage, uploadPost } from "../../actions/UploadAction";
 import useWindowWidth from "../../useWindowWidth";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const ImageGenerate = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const ImageGenerate = () => {
     };
 
     try {
+      
       await axios.request(options).then(response => {
         console.log(response)
 
@@ -60,18 +62,37 @@ const ImageGenerate = () => {
         setLoading(false)
       })
     } catch (error) {
-      alert("Something went wrong")
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: `Something went wrong`,
+        showConfirmButton: false,
+        timer: 2000,
+      })
+      console.log(error)
       setLoading(false)
     };
-
   }
 
   const myFunction = (hash) => {
     setTimeout(() => getImage(hash), 10000);
   }
 
+  const showProgress=()=>{
+    Swal.fire({
+      title: 'Image generating...',
+      html: 'AI creating captivating visual masterpieces',
+      timer: 12000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
+  }
+
   const generateImage = () => {
     setLoading(true)
+    showProgress()
     const encodedParams = new URLSearchParams();
     encodedParams.append("prompt", `${prompt}`);
     encodedParams.append("id", `${Date.now()}${prompt}`);

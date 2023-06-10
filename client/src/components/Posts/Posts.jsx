@@ -23,7 +23,7 @@
 //       // Remove the deleted post from the state
 //       setUpdatePage(prev => !prev)
 //       posts = posts.filter((post) => post._id !== id);
-      
+
 //     } catch (error) {
 //       console.error(error);
 //     }
@@ -54,6 +54,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./Posts.css";
 import { useParams } from "react-router-dom";
 import { deletePost } from "../../api/PostsRequests";
+import ReactLoading from "react-loading";
 
 const Posts = () => {
   const params = useParams();
@@ -77,22 +78,25 @@ const Posts = () => {
       console.error(error);
     }
   };
-  
+
   if (!(posts?.length)) return <p className="follow_user">No posts have been made yet!</p>;
 
   if (params.id && params.id !== user._id && !user.following.includes(params.id))
     return <p className="follow_user">Please follow to see posts</p>;
 
-  
+
   const filteredPosts = params.id ? posts.filter((post) => post.userId === params.id) : posts;
-  
+
   return (
     <div className="Posts">
       {loading
-        ? "Fetching posts...."
+        ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <ReactLoading type={"bars"} color="#fff" />
+        </div>
+
         : filteredPosts.map((post) => (
-            <Post data={post} key={post._id} onDelete={handleDeletePost} />
-          ))}
+          <Post data={post} key={post._id} onDelete={handleDeletePost} />
+        ))}
     </div>
   );
 };

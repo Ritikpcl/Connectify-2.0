@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as UserApi from "../../api/UserRequests.js";
 import "./ProfileCard.css";
+import ReactLoading from "react-loading"
 
 const ProfileCard = ({ location }) => {
   const params = useParams();
@@ -43,7 +44,9 @@ const ProfileCard = ({ location }) => {
   }, [params.id, mainUser]);
 
   if(loading){
-    return <p>Loading...</p>
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <ReactLoading type={"bars"} color="#fff" />
+  </div>
   }
 
   return (

@@ -63,3 +63,9 @@
 .desc{
     padding-left: 0.5rem;
 }
+
+.metaData{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
