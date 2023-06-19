@@ -15,7 +15,6 @@ import ReactLoading from "react-loading"
 const Post = ({ data, onDelete }) => {
   const imageUrl = data?.image
   const createdAt = new Date(data.createdAt);
-  console.log(createdAt)
 
   const { user } = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
@@ -26,8 +25,7 @@ const Post = ({ data, onDelete }) => {
 
   const calculateTimeDifference = () => {
     const now = new Date();
-    console.log(createdAt)
-    const diffInMilliseconds = now - createdAt - 7*60*1000;
+    const diffInMilliseconds = now - createdAt - 20*60*1000;
     const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
 
     if (diffInMinutes < 1) {
