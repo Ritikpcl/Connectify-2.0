@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImage, uploadPost } from "../../actions/UploadAction";
 import useWindowWidth from "../../useWindowWidth";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const ImageGenerate = () => {
@@ -25,37 +26,42 @@ const ImageGenerate = () => {
     setPrompt(event.target.value)
   }
 
-  const showProgress=()=>{
-    Swal.fire({
-      title: 'Image generating...',
-      html: 'AI creating captivating visual masterpieces',
-      timer: 7000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading()
-      },
-    })
-  }
+  const getImage = async (hash) => {
+    console.log("getImage", hash)
+    const options = {
+      method: 'GET',
+      url: 'https://arimagesynthesizer.p.rapidapi.com/get',
+      params: { hash: hash, returnType: 'base64' },
+      headers: {
+        'X-RapidAPI-Key': `${process.env.REACT_APP_RAPID_API_KEY}`,
+        'X-RapidAPI-Host': 'arimagesynthesizer.p.rapidapi.com'
+      }
+    };
 
-  const generateImage = async() => {
-    setLoading(true)
-    showProgress()
-    try{
-      const response = await fetch(
-        "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_HF_INFERENCE_ENDPOINT}`,
-          },
-          body: JSON.stringify({ inputs: prompt }),
+    try {
+
+      await axios.request(options).then(response => {
+        console.log(response)
+
+        const base64String = response.data.image;
+
+        // Decode the base64 string into a binary string
+        const binaryString = atob(base64String);
+
+        // Convert the binary string to a typed array
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
         }
-      );
-      const blob = await response.blob();
-      setImage(blob)
-      setLoading(false);
-    }catch (error) {
+
+        // Create a new Blob object with the typed array
+        const blob = new Blob([bytes], { type: 'image/jpeg' }); // Replace 'image/jpeg' with the appropriate MIME type
+
+        console.log(blob); // You can now use the blob object as needed
+        setImage(blob)
+        setLoading(false)
+      })
+    } catch (error) {
       Swal.fire({
         position: 'top',
         icon: 'error',
@@ -65,8 +71,63 @@ const ImageGenerate = () => {
       })
       console.log(error)
       setLoading(false)
+    };
+  }
+
+  const myFunction = (hash) => {
+    setTimeout(() => getImage(hash), 10000);
+  }
+
+  const showProgress=()=>{
+    Swal.fire({
+      title: 'Image generating...',
+      html: 'AI creating captivating visual masterpieces',
+      timer: 12000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+      },
+    })
+  }
+
+  const generateImage = () => {
+    setLoading(true)
+    showProgress()
+    const encodedParams = new URLSearchParams();
+    encodedParams.append("prompt", `${prompt}`);
+    encodedParams.append("id", `${Date.now()}${prompt}`);
+    encodedParams.append("width", "768");
+    encodedParams.append("height", "768");
+    encodedParams.append("inferenceSteps", "50");
+    encodedParams.append("guidanceScale", "20");
+    encodedParams.append("img2img_strength", "0.5");
+
+    const options = {
+      method: 'POST',
+      url: 'https://arimagesynthesizer.p.rapidapi.com/generate',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Key': `${process.env.REACT_APP_RAPID_API_KEY}`,
+        'X-RapidAPI-Host': 'arimagesynthesizer.p.rapidapi.com'
+      },
+      data: encodedParams
+    };
+
+    try {
+      axios.request(options)
+        .then(response => {
+          console.log("response", response.data.hash)
+          // setHashCode(response.data.hash)
+          // console.log("response", hashCode)
+          myFunction(response.data.hash)
+        })
+    } catch (error) {
+      console.error(error);
+      setLoading(false)
     }
   };
+
+  
 
   // handle post upload
   const handleUpload = async (e) => {
