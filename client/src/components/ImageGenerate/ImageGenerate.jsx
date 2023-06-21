@@ -69,8 +69,8 @@ const ImageGenerate = () => {
         showConfirmButton: false,
         timer: 2000,
       })
+      console.log(error)
     };
-    console.log(error)
     setLoading(false)
   }
 
