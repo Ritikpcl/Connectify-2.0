@@ -69,9 +69,9 @@ const ImageGenerate = () => {
         showConfirmButton: false,
         timer: 2000,
       })
-      console.log(error)
-      setLoading(false)
     };
+    console.log(error)
+    setLoading(false)
   }
 
   const myFunction = (hash) => {
