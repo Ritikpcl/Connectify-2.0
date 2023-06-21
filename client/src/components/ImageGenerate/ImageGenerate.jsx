@@ -67,7 +67,7 @@ const ImageGenerate = () => {
         icon: 'error',
         title: `Something went wrong`,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 3000,
       })
       console.log(error)
     };
