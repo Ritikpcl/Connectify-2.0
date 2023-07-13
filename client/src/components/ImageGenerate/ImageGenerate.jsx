@@ -43,7 +43,7 @@ const ImageGenerate = () => {
 
       try {
             const response = await fetch(
-              `${process.env.REACT_APP_IMAGE_GEN_URL}`,
+              `https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5`,
                 {
                     headers: { Authorization: `Bearer ${process.env.REACT_APP_IMAGE_GEN_API}` },
                     method: "POST",
