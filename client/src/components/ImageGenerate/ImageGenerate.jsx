@@ -42,7 +42,6 @@ const ImageGenerate = () => {
     showProgress()
 
       try {
-            setImage(null)
             const response = await fetch(
               `${process.env.REACT_APP_IMAGE_GEN_URL}`,
                 {
