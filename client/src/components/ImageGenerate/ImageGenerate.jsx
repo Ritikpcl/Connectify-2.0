@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImage, uploadPost } from "../../actions/UploadAction";
 import useWindowWidth from "../../useWindowWidth";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const ImageGenerate = () => {
@@ -26,63 +25,11 @@ const ImageGenerate = () => {
     setPrompt(event.target.value)
   }
 
-  const getImage = async (hash) => {
-    console.log("getImage", hash)
-    const options = {
-      method: 'GET',
-      url: 'https://arimagesynthesizer.p.rapidapi.com/get',
-      params: { hash: hash, returnType: 'base64' },
-      headers: {
-        'X-RapidAPI-Key': `${process.env.REACT_APP_RAPID_API_KEY}`,
-        'X-RapidAPI-Host': 'arimagesynthesizer.p.rapidapi.com'
-      }
-    };
-
-    try {
-
-      await axios.request(options).then(response => {
-        console.log(response)
-
-        const base64String = response.data.image;
-
-        // Decode the base64 string into a binary string
-        const binaryString = atob(base64String);
-
-        // Convert the binary string to a typed array
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
-        }
-
-        // Create a new Blob object with the typed array
-        const blob = new Blob([bytes], { type: 'image/jpeg' }); // Replace 'image/jpeg' with the appropriate MIME type
-
-        console.log(blob); // You can now use the blob object as needed
-        setImage(blob)
-        setLoading(false)
-      })
-    } catch (error) {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: `Something went wrong`,
-        showConfirmButton: false,
-        timer: 3000,
-      })
-      console.log(error)
-    };
-    setLoading(false)
-  }
-
-  const myFunction = (hash) => {
-    setTimeout(() => getImage(hash), 10000);
-  }
-
   const showProgress=()=>{
     Swal.fire({
       title: 'Image generating...',
       html: 'AI creating captivating visual masterpieces',
-      timer: 12000,
+      timer: 7000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading()
@@ -90,44 +37,36 @@ const ImageGenerate = () => {
     })
   }
 
-  const generateImage = () => {
+  const generateImage = async () => {
     setLoading(true)
     showProgress()
-    const encodedParams = new URLSearchParams();
-    encodedParams.append("prompt", `${prompt}`);
-    encodedParams.append("id", `${Date.now()}${prompt}`);
-    encodedParams.append("width", "768");
-    encodedParams.append("height", "768");
-    encodedParams.append("inferenceSteps", "50");
-    encodedParams.append("guidanceScale", "20");
-    encodedParams.append("img2img_strength", "0.5");
 
-    const options = {
-      method: 'POST',
-      url: 'https://arimagesynthesizer.p.rapidapi.com/generate',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': `${process.env.REACT_APP_RAPID_API_KEY}`,
-        'X-RapidAPI-Host': 'arimagesynthesizer.p.rapidapi.com'
-      },
-      data: encodedParams
-    };
-
-    try {
-      axios.request(options)
-        .then(response => {
-          console.log("response", response.data.hash)
-          // setHashCode(response.data.hash)
-          // console.log("response", hashCode)
-          myFunction(response.data.hash)
+      try {
+            setImage(null)
+            const response = await fetch(
+              `${process.env.REACT_APP_IMAGE_GEN_URL}`,
+                {
+                    headers: { Authorization: `Bearer ${process.env.REACT_APP_IMAGE_GEN_API}` },
+                    method: "POST",
+                    body: JSON.stringify(prompt),
+                }
+            );
+            const result = await response.blob();
+            console.log(result)
+            setImage(result)
+            setLoading(false)
+      } catch (error) {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: `Something went wrong`,
+          showConfirmButton: false,
+          timer: 2000,
         })
-    } catch (error) {
-      console.error(error);
-      setLoading(false)
-    }
+        console.error(error);
+        setLoading(false)
+      }
   };
-
-  
 
   // handle post upload
   const handleUpload = async (e) => {
