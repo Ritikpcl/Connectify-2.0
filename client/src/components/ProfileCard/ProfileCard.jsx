@@ -59,7 +59,7 @@ const ProfileCard = ({ location }) => {
           }
           alt="CoverImage"
         />
-        <img
+        <img className="profileImage"
           src={
             user?.profilePicture
           }

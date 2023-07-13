@@ -9,7 +9,7 @@ export default function HamMenu({open}) {
 
     return (
         <div className={open ? "menu-div menu-div-open" : "menu-div menu-div-close"}>
-            <img
+            <img className='profileImage'
                 src={
                     user?.profilePicture
                 }

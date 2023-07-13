@@ -64,8 +64,9 @@ const Posts = () => {
   const [updatePage, setUpdatePage] = useState(false);
 
   useEffect(() => {
-    dispatch(getTimelinePosts(user._id));
-  }, [updatePage, dispatch, user._id]);
+    const id = params?.id ? params?.id : user._id
+    dispatch(getTimelinePosts(id));
+  }, [updatePage, dispatch, user._id, params.id]);
 
   const handleDeletePost = async (id) => {
     try {

@@ -65,6 +65,7 @@ const PostShare = () => {
     setImage(null);
     setStatus("")
     Navigate('/')
+    window.location.reload();
   };
 
   return (

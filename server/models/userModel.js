@@ -18,10 +18,6 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
    profilePicture:{
     type : String,
     default : "https://res.cloudinary.com/dihxiv8cj/image/upload/v1686043303/user_b6wyms.png",
@@ -29,7 +25,7 @@ const UserSchema = mongoose.Schema(
    },
     coverPicture: {
       type : String,
-      default : "https://asset.cloudinary.com/dihxiv8cj/f7ca52cb2d61e0e96d9d15677a16d33a",
+      default : "https://res.cloudinary.com/dihxiv8cj/image/upload/v1689271208/coverpic_dg3dmu.png",
       required : true
      },
     about: String,

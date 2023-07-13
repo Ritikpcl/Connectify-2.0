@@ -33,7 +33,7 @@ const NavIcons = () => {
       title: 'Are you sure?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#121111',
+      confirmButtonColor: '#FF3131',
       cancelButtonColor: '#4B4B4B',
       confirmButtonText: 'Logout',
     }).then((result) => {

@@ -1,4 +1,5 @@
 import UserModel from "../models/userModel.js";
+import PostModel from "../models/postModel.js";
 
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'
@@ -60,7 +61,7 @@ export const getSearchedUser = async(req,res)=>{
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   // console.log("Data Received", req.body)
-  const { _id, currentUserAdmin, password } = req.body;
+  const { _id, password } = req.body;
   
   if (id === _id) {
     try {
@@ -93,15 +94,20 @@ export const updateUser = async (req, res) => {
 // Delete a user
 export const deleteUser = async (req, res) => {
   const id = req.params.id;
-
-  const { currentUserId, currentUserAdmin } = req.body;
-
-  if (currentUserId == id || currentUserAdmin) {
+  const { _id } = req.body;
+  console.log(_id,id)
+  if (_id == id) {
     try {
+      //deleting all user's posts
+      await PostModel.deleteMany({ "userId": id });
+
+      //deleting user 
       await UserModel.findByIdAndDelete(id);
+      console.log("Deleted successfully")
+
       res.status(200).json("User Deleted Successfully!");
     } catch (error) {
-      res.status(500).json(err);
+      res.status(500).json(error);
     }
   } else {
     res.status(403).json("Access Denied!");

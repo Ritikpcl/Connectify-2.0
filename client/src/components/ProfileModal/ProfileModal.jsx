@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { uploadImage } from "../../actions/UploadAction";
 import { updateUser } from "../../actions/UserAction";
+import * as UserApi from "../../api/UserRequests.js";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const theme = useMantineTheme();
@@ -14,6 +17,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const [coverImage, setCoverImage] = useState(null);
   const dispatch = useDispatch();
   const param = useParams();
+  const Navigate = useNavigate();
 
   const { user } = useSelector((state) => state.authReducer.authData);
   const handleChange = (e) => {
@@ -62,6 +66,28 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
     setModalOpened(false);
   };
 
+  const removeUser = async () => {
+    await UserApi.deleteUser(param.id, formData)
+    localStorage.clear();
+    localStorage.removeItem("reduxState")
+    window.location.reload();
+  }
+
+  const deleteAccount = async () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FF0000',
+      cancelButtonColor: '#4B4B4B',
+      confirmButtonText: 'Delete Account',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeUser()
+      } else return
+    })
+  }
+
   return (
     <Modal
       overlayColor={
@@ -95,7 +121,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
             className="infoInput"
           />
         </div>
-        
+
         <div>
           <input
             value={formData.password}
@@ -156,9 +182,15 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
           <input type="file" name="coverImage" onChange={onImageChange} />
         </div>
 
-        <button className="button infoButton" type="submit">
-          Update
-        </button>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <button className="button infoButton" type="submit">
+            Update
+          </button>
+
+          <button className="button infoButton" style={{ backgroundColor: '#FF3131', color: 'white' }} onClick={deleteAccount}>Delete Account</button>
+
+        </div>
+
       </form>
     </Modal>
   );

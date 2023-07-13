@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./Post.css";
-import Comment from "../../img/comment.png";
-import Share from "../../img/share.png";
 import Heart from "../../img/like.png";
 import NotLike from "../../img/notlike.png";
 import Delete from "../../img/delete.png";
@@ -11,6 +9,7 @@ import * as UserApi from "../../api/UserRequests.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading"
+import Swal from 'sweetalert2'
 
 const Post = ({ data, onDelete }) => {
   const imageUrl = data?.image
@@ -65,6 +64,21 @@ const Post = ({ data, onDelete }) => {
     };
   }, []);
 
+  const handlePostDelete=()=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FF3131',
+      cancelButtonColor: '#4B4B4B',
+      confirmButtonText: 'Delete',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onDelete(data._id)
+      } else return
+    })
+  }
+
   const handleLike = () => {
     likePost(data._id, user._id);
     setLiked((prev) => !prev);
@@ -95,7 +109,7 @@ const Post = ({ data, onDelete }) => {
               </div>
               <div>
                 {data.userId === user._id ?
-                  <button className="deleteButton" onClick={() => onDelete(data._id)}><img style={{ width: "30px" }} src={Delete} ></img></button>
+                  <button className="deleteButton" onClick={handlePostDelete}><img style={{ width: "30px" }} src={Delete} ></img></button>
                   : <></>
                 }
               </div>

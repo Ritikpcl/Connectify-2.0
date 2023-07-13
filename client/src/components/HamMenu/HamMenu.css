@@ -27,6 +27,7 @@
 
 .menu-div>img{
     width: 55px;
+    border-radius: 50%;
 }
 
 .menu-div>span{

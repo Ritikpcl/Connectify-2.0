@@ -62,7 +62,6 @@ const Auth = () => {
         }
       }
 
-
       const res = 
       data.password === data.confirmpass
         ? await dispatch(signUp(data, navigate))
