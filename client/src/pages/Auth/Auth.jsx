@@ -52,6 +52,17 @@ const Auth = () => {
     setConfirmPass(true);
     e.preventDefault();
     if (isSignUp) {
+
+      if (data.username) { 
+        const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const isValidEmail = emailPattern.test(data.username);
+        if(!isValidEmail){
+          fireAlert('Enter valid email')
+          return;
+        }
+      }
+
+
       const res = 
       data.password === data.confirmpass
         ? await dispatch(signUp(data, navigate))
