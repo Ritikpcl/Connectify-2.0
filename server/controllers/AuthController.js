@@ -5,19 +5,20 @@ import jwt from "jsonwebtoken";
 // Register new user
 export const registerUser = async (req, res) => {
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPass = await bcrypt.hash(req.body.password, salt);
-  req.body.password = hashedPass
-  const newUser = new UserModel(req.body);
-  const {username} = req.body
   try {
     // addition new
+    const {username} = req.body
     const oldUser = await UserModel.findOne({ username });
-
+    
     if (oldUser)
-      return res.status(400).json({ message: "User already exists" });
+    return res.status(400).json({ message: "User already exists" });
+    
+    // password encoding
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashedPass
 
-    // changed
+    const newUser = new UserModel(req.body);
     const user = await newUser.save();
     const token = jwt.sign(
       { username: user.username, id: user._id },
@@ -32,7 +33,6 @@ export const registerUser = async (req, res) => {
 
 // Login User
 
-// Changed
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
 

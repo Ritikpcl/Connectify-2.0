@@ -37,6 +37,7 @@ export default function HamMenu({open}) {
                 </div>
                 
             </Link>
+            
             <Link to="/trending">
                 Trending
             </Link>

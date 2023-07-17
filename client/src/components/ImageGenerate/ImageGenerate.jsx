@@ -29,7 +29,7 @@ const ImageGenerate = () => {
     Swal.fire({
       title: 'Image generating...',
       html: 'AI creating captivating visual masterpieces',
-      timer: 7000,
+      timer: 5000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading()
@@ -80,11 +80,9 @@ const ImageGenerate = () => {
     const newPost = {
       userId: user._id,
       desc: status
-      // desc : desc.current ? desc.current.value : ''
     };
 
     // if there is an image with post
-
     if (image) {
       const data = new FormData();
       const fileName = Date.now() + `${prompt}.jpg`
@@ -108,6 +106,7 @@ const ImageGenerate = () => {
     setPrompt("")
     setLoading(false)
     Navigate('/')
+    window.location.reload();
   };
 
   return (

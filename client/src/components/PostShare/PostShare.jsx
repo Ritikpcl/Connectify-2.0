@@ -9,7 +9,8 @@ import { uploadImage, uploadPost } from "../../actions/UploadAction";
 const PostShare = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
-  const loading = useSelector((state) => state.postReducer.uploading);
+  // const loading = useSelector((state) => state.postReducer.uploading);
+  const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [status, setStatus] = useState("");
   const Navigate = useNavigate();
@@ -30,6 +31,7 @@ const PostShare = () => {
 
   // handle post upload
   const handleUpload = async (e) => {
+    setLoading(true)
     e.preventDefault();
 
     if (!(image || status)) {
@@ -64,6 +66,7 @@ const PostShare = () => {
   const resetShare = () => {
     setImage(null);
     setStatus("")
+    setLoading(false)
     Navigate('/')
     window.location.reload();
   };
